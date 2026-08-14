@@ -29,7 +29,7 @@ export const experienceData: ExperienceItem[] = [
     title: "Bachelor of Science (BSc)",
     organization: "Y.C. College Karad (Shivaji University, Kolhapur)",
     date: "Completed",
-    description: "Graduated with A+ Grade (74.92%). Focused on core computer science concepts and logical problem-solving.",
+    description: "Graduated with A+ Grade (74.92%). Focused on concepts and problem-solving.",
     type: "education",
   },
 ];
