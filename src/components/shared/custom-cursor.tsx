@@ -1,89 +1,108 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 
 export function CustomCursor() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = useState(false);
+  const [mouse, setMouse] = useState({ x: -999, y: -999 });
+  const [cat, setCat] = useState({ x: -999, y: -999 });
+  const [catAngle, setCatAngle] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const [isRunning, setIsRunning] = useState(false);
+
+  const catPos = useRef({ x: -999, y: -999 });
+  const mousePos = useRef({ x: -999, y: -999 });
+  const rafRef = useRef(0);
+  const runTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    // Check if it's a touch device, if so, don't show the custom cursor
-    if (window.matchMedia("(pointer: coarse)").matches) {
-      return;
-    }
+    if (window.matchMedia("(pointer: coarse)").matches) return;
 
-    const updateMousePosition = (e: MouseEvent) => {
-      if (!isVisible) setIsVisible(true);
-      setMousePosition({ x: e.clientX, y: e.clientY });
+    const onMove = (e: MouseEvent) => {
+      mousePos.current = { x: e.clientX, y: e.clientY };
+      setMouse({ x: e.clientX, y: e.clientY });
+      setIsVisible(true);
+      setIsRunning(true);
+      if (runTimerRef.current) clearTimeout(runTimerRef.current);
+      runTimerRef.current = setTimeout(() => setIsRunning(false), 150);
     };
 
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      // Check if hovering over a clickable element
-      if (
-        target.tagName.toLowerCase() === "a" ||
-        target.tagName.toLowerCase() === "button" ||
-        target.closest("a") ||
-        target.closest("button") ||
-        window.getComputedStyle(target).cursor === "pointer"
-      ) {
-        setIsHovering(true);
-      } else {
-        setIsHovering(false);
+    const onLeave = () => setIsVisible(false);
+    window.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseleave", onLeave);
+
+    // Lerp cat toward mouse
+    const loop = () => {
+      const dx = mousePos.current.x - catPos.current.x;
+      const dy = mousePos.current.y - catPos.current.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      // Only move cat if far enough from mouse (keeps gap between them)
+      if (dist > 40) {
+        catPos.current.x += dx * 0.08;
+        catPos.current.y += dy * 0.08;
+
+        // Angle cat faces toward the mouse
+        const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+        setCatAngle(angle);
       }
+
+      setCat({ x: catPos.current.x, y: catPos.current.y });
+      rafRef.current = requestAnimationFrame(loop);
     };
 
-    const handleMouseLeave = () => setIsVisible(false);
-
-    window.addEventListener("mousemove", updateMousePosition);
-    window.addEventListener("mouseover", handleMouseOver);
-    document.addEventListener("mouseleave", handleMouseLeave);
+    rafRef.current = requestAnimationFrame(loop);
 
     return () => {
-      window.removeEventListener("mousemove", updateMousePosition);
-      window.removeEventListener("mouseover", handleMouseOver);
-      document.removeEventListener("mouseleave", handleMouseLeave);
+      cancelAnimationFrame(rafRef.current);
+      window.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseleave", onLeave);
+      if (runTimerRef.current) clearTimeout(runTimerRef.current);
     };
-  }, [isVisible]);
+  }, []);
 
   if (!isVisible) return null;
 
   return (
     <>
-      {/* The main trailing circle */}
-      <motion.div
-        className="fixed top-0 left-0 w-8 h-8 rounded-full border-2 border-blue-500/50 pointer-events-none z-[9999] hidden md:block"
-        animate={{
-          x: mousePosition.x - 16,
-          y: mousePosition.y - 16,
-          scale: isHovering ? 1.5 : 1,
-          backgroundColor: isHovering ? "rgba(59, 130, 246, 0.1)" : "transparent",
+      {/* Mouse cursor emoji — exact position */}
+      <div
+        className="fixed pointer-events-none z-[9999] hidden md:block select-none"
+        style={{
+          left: mouse.x - 12,
+          top: mouse.y - 12,
+          fontSize: "24px",
+          lineHeight: 1,
+          filter: "drop-shadow(0 0 6px rgba(255,255,255,0.6))",
+          transform: "scaleX(-1)",
         }}
-        transition={{
-          type: "spring",
-          stiffness: 150,
-          damping: 15,
-          mass: 0.5,
+      >
+        🐭
+      </div>
+
+      {/* Cat — lags behind, faces toward mouse, bounces while running */}
+      <div
+        className="fixed pointer-events-none z-[9998] hidden md:block select-none"
+        style={{
+          left: cat.x - 16,
+          top: cat.y - 16,
+          fontSize: "28px",
+          lineHeight: 1,
+          transform: `rotate(${catAngle}deg)`,
+          transition: "transform 0.1s ease",
+          filter: "drop-shadow(0 0 4px rgba(255,200,100,0.5))",
+          animation: isRunning ? "catRun 0.25s steps(2) infinite" : "none",
         }}
-      />
-      
-      {/* The inner glowing dot */}
-      <motion.div
-        className="fixed top-0 left-0 w-2 h-2 rounded-full bg-blue-400 pointer-events-none z-[9999] hidden md:block shadow-[0_0_10px_rgba(59,130,246,0.8)]"
-        animate={{
-          x: mousePosition.x - 4,
-          y: mousePosition.y - 4,
-          scale: isHovering ? 0 : 1,
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 500,
-          damping: 28,
-          mass: 0.1,
-        }}
-      />
+      >
+        🐱
+      </div>
+
+      <style>{`
+        @keyframes catRun {
+          0%   { margin-top: 0px; }
+          50%  { margin-top: -4px; }
+          100% { margin-top: 0px; }
+        }
+      `}</style>
     </>
   );
 }

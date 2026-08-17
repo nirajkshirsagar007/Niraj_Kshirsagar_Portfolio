@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/shared/navbar";
-import { CustomCursor } from "@/components/shared/custom-cursor";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,8 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning>
-      <body className="min-h-screen bg-background font-sans text-foreground flex flex-col cursor-auto">
-        <CustomCursor />
+      <body className="min-h-screen bg-background font-sans text-foreground flex flex-col">
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
@@ -50,7 +48,7 @@ export default function RootLayout({
             <div className="container mx-auto px-4 md:px-6 relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
               <div className="flex flex-col items-center md:items-start">
                 <p className="text-lg font-bold text-white mb-1">Niraj Kshirsagar</p>
-                <p className="text-sm text-gray-500">© 2025. Built with Next.js & Tailwind CSS.</p>
+                <p className="text-sm text-gray-500">© 2026. Built with Next.js & Tailwind CSS.</p>
               </div>
               
               <div className="flex items-center gap-4">

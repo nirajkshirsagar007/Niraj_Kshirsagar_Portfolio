@@ -6,11 +6,15 @@ import { SkillsSection } from "@/components/shared/skills-section";
 import { ExperienceSection } from "@/components/shared/experience-section";
 import { ContactSection } from "@/components/shared/contact-section";
 import { FadeIn } from "@/components/animations/fade-in";
+import { HeroFluid } from "@/components/shared/fluid-background";
+import { HeroCat } from "@/components/shared/hero-cat";
 
 export default function Home() {
   return (
     <>
-      <div className="relative min-h-screen flex items-center py-32 overflow-hidden">
+      <div id="hero" className="relative min-h-screen flex items-center py-32 overflow-hidden">
+        <HeroFluid />
+        <HeroCat />
 
         {/* Video Layer - Blended into background */}
         <div className="absolute right-0 lg:right-[5%] top-1/2 -translate-y-1/2 w-full lg:w-[700px] h-[700px] -z-20 flex justify-center lg:justify-end items-center opacity-40 lg:opacity-100 pointer-events-none">
