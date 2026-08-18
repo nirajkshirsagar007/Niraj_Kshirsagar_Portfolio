@@ -23,7 +23,7 @@ export const skillsData: SkillCategory[] = [
     ],
   },
   {
-    title: "Frontend (Learning)",
+    title: "Frontend",
     skills: [
       { name: "HTML5", icon: "SiHtml5", color: "#e34f26" },
       { name: "CSS3", icon: "SiCss3", color: "#1572b6" },
