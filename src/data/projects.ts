@@ -9,6 +9,22 @@ export interface Project {
 
 export const projectsData: Project[] = [
   {
+    id: "advayur",
+    title: "Advayur — Ayurvedic Catalog Platform",
+    description: "A full-stack Ayurvedic platform designed to provide customers with a smooth product discovery and shopping experience. Features product management, Cloudinary media, MongoDB data management, an intelligent FAQ chatbot, and multilingual architecture (English, Hindi, Marathi).",
+    technologies: ["Next.js", "React", "TypeScript", "MongoDB", "Cloudinary", "Tailwind CSS"],
+    github: "https://github.com/nirajkshirsagar007/advayur-catalog",
+    link: "https://advayurnaturals-git-develop-team-niraj.vercel.app/en",
+  },
+  {
+    id: "portfolio",
+    title: "Interactive Next.js Portfolio V2",
+    description: "A modern, highly interactive portfolio featuring a premium glassmorphic design system, custom SVG animations, a fluid particle background, Web3Forms contact integration, and responsive App Router architecture.",
+    technologies: ["Next.js", "React", "Tailwind CSS", "TypeScript", "SVG Animations"],
+    github: "https://github.com/nirajkshirsagar007/Niraj_Kshirsagar_Portfolio",
+    link: "https://niraj-kshirsagar-portfolio-tan.vercel.app/",
+  },
+  {
     id: "1",
     title: "Mini Grocery Store Management System",
     description: "Backend-based grocery store management system featuring layered architecture, secure JWT authentication, and robust REST APIs with Swagger documentation.",

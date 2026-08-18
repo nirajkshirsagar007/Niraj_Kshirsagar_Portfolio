@@ -66,7 +66,7 @@ export function ProjectsSection() {
                     href={project.link} 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className={`rounded-full ${buttonVariants({ size: "sm" })} bg-white text-black hover:bg-gray-200`}
+                    className={`rounded-full ${buttonVariants({ size: "sm" })} bg-blue-400 text-black hover:bg-blue-300 font-semibold`}
                   >
                     <ExternalLink className="mr-2 h-4 w-4" />
                     Live Demo
