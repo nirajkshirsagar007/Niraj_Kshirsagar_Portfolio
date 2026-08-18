@@ -13,7 +13,7 @@ export function ExperienceSection() {
           </p>
         </div>
 
-        <div className="max-w-3xl mx-auto relative border-l-2 border-primary/20 pl-6 ml-4 md:ml-0 md:pl-8">
+        <div className="max-w-3xl mx-auto relative border-l-2 border-primary/20 pl-6 md:pl-8">
           {experienceData.map((item, index) => (
             <div key={item.id} className="mb-10 relative">
               {/* Timeline Dot with Icon */}
